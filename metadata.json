@@ -1,0 +1,7 @@
+{
+  "name": "Kabale University Transport System (KUTS)",
+  "description": "A comprehensive, modern transportation management and booking system for students and staff of Kabale University, featuring AI-powered route planning and real-time scheduling.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
