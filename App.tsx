@@ -9,7 +9,10 @@ import Schedules from './views/Schedules';
 import Enrollment from './views/Enrollment';
 import AdminApplications from './views/AdminApplications';
 import Attendance from './views/Attendance';
-import { MOCK_USER, ROUTES } from './constants';
+import Navigation from './views/Navigation';
+import AIVisualizer from './views/AIVisualizer';
+import Settings from './views/Settings';
+import { MOCK_USER, ASSET_PATHS } from './constants';
 import { UserRole } from './types';
 
 const App: React.FC = () => {
@@ -40,6 +43,12 @@ const App: React.FC = () => {
         return <Fleet />;
       case 'schedules':
         return <Schedules />;
+      case 'navigation':
+        return <Navigation />;
+      case 'visualizer':
+        return <AIVisualizer />;
+      case 'settings':
+        return <Settings />;
       case 'history':
         return (
           <div className="space-y-6 animate-fadeIn">
@@ -97,7 +106,9 @@ const App: React.FC = () => {
             <div className="h-40 bg-slate-900 relative">
                <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
                <div className="absolute -bottom-16 left-12 w-32 h-32 rounded-[2.5rem] border-8 border-slate-50 bg-white shadow-2xl overflow-hidden">
-                  <img src={`https://picsum.photos/seed/${currentUser.name}/200/200`} alt="Profile" className="w-full h-full object-cover" />
+                  <img src={ASSET_PATHS.USER_PROFILE} alt="Profile" className="w-full h-full object-cover" onError={(e) => {
+                    e.currentTarget.src = `https://picsum.photos/seed/${currentUser.name}/200/200`;
+                  }} />
                </div>
             </div>
             <div className="pt-20 px-12 pb-12">

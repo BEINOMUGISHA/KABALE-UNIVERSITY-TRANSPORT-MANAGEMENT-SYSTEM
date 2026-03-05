@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ICONS, UNIVERSITY_COLORS } from '../constants';
+import { ICONS, ASSET_PATHS } from '../constants';
 import { UserRole } from '../types';
 
 interface LayoutProps {
@@ -21,22 +21,25 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
     { id: 'attendance', label: 'Boarding Logs', icon: ICONS.Scanner, roles: [UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
     { id: 'drivers', label: 'Drivers', icon: ICONS.Users, roles: [UserRole.ADMIN, UserRole.TRANSPORT_MANAGER] },
     { id: 'schedules', label: 'Schedules', icon: ICONS.Calendar, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
+    { id: 'navigation', label: 'Navigation', icon: ICONS.Map, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
+    { id: 'visualizer', label: 'AI Visualizer', icon: ICONS.Image, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
     { id: 'history', label: 'My Bookings', icon: ICONS.History, roles: [UserRole.STUDENT, UserRole.STAFF] },
     { id: 'profile', label: 'Profile', icon: ICONS.User, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
+    { id: 'settings', label: 'Settings', icon: ICONS.Settings, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
   ];
 
   const navItems = allNavItems.filter(item => item.roles.includes(userRole));
 
-  const KAB_LOGO = "https://www.kab.ac.ug/wp-content/uploads/2021/08/kab-logo.png";
-
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-50">
+    <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-950">
       {/* Sidebar */}
-      <aside className="w-64 bg-slate-900 text-white flex-shrink-0 flex flex-col hidden md:flex">
+      <aside className="w-64 bg-slate-900 dark:bg-slate-950 text-white flex-shrink-0 flex flex-col hidden md:flex border-r border-slate-800 dark:border-slate-800">
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-inner">
-              <img src={KAB_LOGO} alt="Kabale University Logo" className="object-contain" />
+              <img src={ASSET_PATHS.LOGO} alt="Kabale University Logo" className="object-contain" onError={(e) => {
+                e.currentTarget.src = 'https://www.kab.ac.ug/wp-content/uploads/2021/08/kab-logo.png';
+              }} />
             </div>
             <div>
               <h1 className="text-lg font-bold leading-none text-white tracking-tight">KUTS</h1>
@@ -69,7 +72,9 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
         <div className="mt-auto p-6 border-t border-slate-800 bg-slate-900/50">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center border-2 border-green-600 overflow-hidden shadow-lg">
-               <img src={`https://picsum.photos/seed/${userName}/40/40`} alt="Avatar" />
+               <img src={ASSET_PATHS.USER_PROFILE} alt="Avatar" onError={(e) => {
+                 e.currentTarget.src = `https://picsum.photos/seed/${userName}/40/40`;
+               }} />
             </div>
             <div className="overflow-hidden">
               <p className="font-bold text-sm truncate">{userName}</p>
@@ -80,17 +85,19 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0 bg-slate-50 overflow-y-auto scroll-smooth">
-        <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10 backdrop-blur-md bg-white/90">
-          <div className="flex items-center gap-4">
+      <main className="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-slate-950 overflow-y-auto scroll-smooth">
+        <header className="h-16 md:h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 md:px-8 sticky top-0 z-10 backdrop-blur-md bg-white/90 dark:bg-slate-900/90">
+          <div className="flex items-center gap-3 md:gap-4">
              {/* Mobile Logo */}
-             <div className="md:hidden w-10 h-10 bg-white rounded-lg p-1 border border-slate-200">
-               <img src={KAB_LOGO} alt="KAB Logo" className="object-contain" />
+             <div className="md:hidden w-8 h-8 bg-white dark:bg-slate-800 rounded-lg p-1 border border-slate-200 dark:border-slate-700">
+               <img src={ASSET_PATHS.LOGO} alt="KAB Logo" className="object-contain" onError={(e) => {
+                 e.currentTarget.src = 'https://www.kab.ac.ug/wp-content/uploads/2021/08/kab-logo.png';
+               }} />
              </div>
-             <h2 className="text-xl font-extrabold text-slate-800 capitalize tracking-tight">{activeTab.replace('-', ' ')}</h2>
+             <h2 className="text-lg md:text-xl font-extrabold text-slate-800 dark:text-white capitalize tracking-tight truncate max-w-[150px] sm:max-w-none">{activeTab.replace('-', ' ')}</h2>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <div className="relative hidden lg:block">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
                 <ICONS.Search />
@@ -98,23 +105,23 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
               <input 
                 type="text" 
                 placeholder="Search..." 
-                className="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-full text-sm focus:ring-2 focus:ring-green-600 w-48 xl:w-72 transition-all outline-none"
+                className="pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-full text-sm text-slate-800 dark:text-white focus:ring-2 focus:ring-green-600 w-48 xl:w-72 transition-all outline-none"
               />
             </div>
             
-            <button className="p-2 text-slate-500 hover:bg-slate-100 rounded-full relative transition-colors">
+            <button className="p-1.5 md:p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full relative transition-colors">
               <ICONS.Bell />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+              <span className="absolute top-1.5 right-1.5 md:top-2 md:right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900 animate-pulse"></span>
             </button>
             
-            <div className="h-8 w-px bg-slate-200 mx-2"></div>
+            <div className="h-6 md:h-8 w-px bg-slate-200 dark:bg-slate-800 mx-1 md:mx-2"></div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               <div className="text-right hidden sm:block">
-                <p className="text-[10px] text-green-700 font-bold uppercase leading-none mb-1">Session</p>
-                <p className="text-xs font-black text-slate-800">Verified</p>
+                <p className="text-[9px] md:text-[10px] text-green-700 dark:text-green-400 font-bold uppercase leading-none mb-1">Session</p>
+                <p className="text-[11px] md:text-xs font-black text-slate-800 dark:text-white">Verified</p>
               </div>
-              <div className="p-2 bg-green-50 text-green-700 rounded-xl border border-green-100 shadow-sm">
+              <div className="p-1.5 md:p-2 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-lg md:rounded-xl border border-green-100 dark:border-green-800 shadow-sm">
                 <ICONS.Sparkles />
               </div>
             </div>
@@ -127,19 +134,30 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
       </main>
       
       {/* Mobile Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-200 flex justify-around p-3 z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-        {navItems.slice(0, 4).map((item) => (
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-slate-200 dark:border-slate-800 flex justify-around p-3 z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        {navItems.slice(0, 5).map((item) => (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
             className={`flex flex-col items-center p-2 rounded-xl transition-all ${
-              activeTab === item.id ? 'text-green-700 scale-110' : 'text-slate-400'
+              activeTab === item.id ? 'text-green-700 dark:text-green-400 scale-110' : 'text-slate-400 dark:text-slate-500'
             }`}
           >
             <item.icon />
-            <span className="text-[10px] font-bold mt-1 uppercase tracking-tighter">{item.label}</span>
+            <span className="text-[9px] font-bold mt-1 uppercase tracking-tighter truncate w-12 text-center">{item.label}</span>
           </button>
         ))}
+        {navItems.length > 5 && (
+          <button
+            onClick={() => setActiveTab('profile')}
+            className={`flex flex-col items-center p-2 rounded-xl transition-all ${
+              activeTab === 'profile' ? 'text-green-700 dark:text-green-400 scale-110' : 'text-slate-400 dark:text-slate-500'
+            }`}
+          >
+            <ICONS.User />
+            <span className="text-[9px] font-bold mt-1 uppercase tracking-tighter">More</span>
+          </button>
+        )}
       </div>
     </div>
   );

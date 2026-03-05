@@ -1,23 +1,24 @@
 
-import React, { useState } from 'react';
-import { DRIVERS as INITIAL_DRIVERS, ICONS, SCHEDULES, ROUTES, BUSES } from '../constants';
+import React, { useState, useEffect } from 'react';
+import { kutsStore } from '../services/store';
+import { ICONS, SCHEDULES, ROUTES, BUSES, ASSET_PATHS } from '../constants';
 import { Driver } from '../types';
 
 const Drivers: React.FC = () => {
-  // Use local state to simulate driver status updates
-  const [drivers, setDrivers] = useState<Driver[]>(INITIAL_DRIVERS);
+  const [drivers, setDrivers] = useState<Driver[]>(kutsStore.getDrivers());
 
-  const toggleAvailability = (driverId: string) => {
-    setDrivers(prev => prev.map(d => {
-      if (d.id === driverId) {
-        return {
-          ...d,
-          // Mapping 'AVAILABLE' to 'ACTIVE' and 'UNAVAILABLE' to 'OFF_DUTY' for demo purposes
-          status: d.status === 'ACTIVE' ? 'OFF_DUTY' : 'ACTIVE'
-        };
-      }
-      return d;
-    }));
+  useEffect(() => {
+    const sync = () => setDrivers([...kutsStore.getDrivers()]);
+    window.addEventListener('kuts-store-update', sync);
+    return () => window.removeEventListener('kuts-store-update', sync);
+  }, []);
+
+  const toggleAvailability = async (driverId: string) => {
+    const driver = drivers.find(d => d.id === driverId);
+    if (driver) {
+      const nextStatus: Driver['status'] = driver.status === 'ACTIVE' ? 'OFF_DUTY' : 'ACTIVE';
+      await kutsStore.updateDriverStatus(driverId, nextStatus);
+    }
   };
 
   return (
@@ -51,6 +52,9 @@ const Drivers: React.FC = () => {
                       src={driver.avatarUrl} 
                       alt={driver.name} 
                       className="w-20 h-20 rounded-[1.5rem] object-cover border-4 border-slate-50 shadow-inner"
+                      onError={(e) => {
+                        e.currentTarget.src = `https://i.pravatar.cc/150?u=${driver.id}`;
+                      }}
                     />
                     <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-full border-4 border-white shadow-sm ${isAvailable ? 'bg-green-500' : 'bg-slate-400'}`}></div>
                   </div>
@@ -195,7 +199,14 @@ const Drivers: React.FC = () => {
                       </td>
                       <td className="py-6 px-4">
                         <div className="flex items-center gap-3">
-                          <img src={driver?.avatarUrl} className="w-8 h-8 rounded-full border border-slate-200" alt="" />
+                          <img 
+                            src={driver?.avatarUrl} 
+                            className="w-8 h-8 rounded-full border border-slate-200" 
+                            alt="" 
+                            onError={(e) => {
+                                e.currentTarget.src = `https://i.pravatar.cc/150?u=${driver?.id}`;
+                            }}
+                          />
                           <div>
                             <p className="text-sm font-black text-slate-700 leading-none">{driver?.name}</p>
                             <p className={`text-[10px] font-bold uppercase mt-1 ${driver?.status === 'ACTIVE' ? 'text-green-600' : 'text-slate-400'}`}>
