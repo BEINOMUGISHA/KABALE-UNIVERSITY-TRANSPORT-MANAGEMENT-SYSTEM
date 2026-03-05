@@ -57,28 +57,6 @@ const Settings: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm">
-          <h3 className="text-lg font-black text-slate-800 dark:text-white mb-6 flex items-center gap-2">
-            <ICONS.User />
-            Account Preferences
-          </h3>
-          
-          <div className="space-y-4">
-            <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Email Notifications</span>
-              <div className="w-10 h-5 bg-green-600 rounded-full relative">
-                <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div>
-              </div>
-            </div>
-            <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 flex items-center justify-between">
-              <span className="text-sm font-bold text-slate-700 dark:text-slate-300">Push Notifications</span>
-              <div className="w-10 h-5 bg-slate-300 dark:bg-slate-700 rounded-full relative">
-                <div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full"></div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

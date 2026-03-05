@@ -3,7 +3,7 @@ export enum UserRole {
   STUDENT = 'STUDENT',
   STAFF = 'STAFF',
   ADMIN = 'ADMIN',
-  TRANSPORT_MANAGER = 'MANAGER',
+  TRANSPORT_MANAGER = 'TRANSPORT_MANAGER',
   SECURITY = 'SECURITY'
 }
 
@@ -12,19 +12,7 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  registrationNumber?: string;
-  department?: string;
-  enrollmentStatus?: 'NONE' | 'PENDING' | 'APPROVED' | 'REJECTED';
-}
-
-export interface Driver {
-  id: string;
-  name: string;
-  phoneNumber: string;
-  licenseNumber: string;
-  rating: number;
-  avatarUrl: string;
-  status: 'ACTIVE' | 'ON_LEAVE' | 'OFF_DUTY';
+  avatarUrl?: string;
 }
 
 export interface Bus {
@@ -33,53 +21,43 @@ export interface Bus {
   model: string;
   capacity: number;
   status: 'OPERATIONAL' | 'MAINTENANCE' | 'BREAKDOWN';
-  lastServiceDate: string;
-  fuelLevel: number; // Percentage
+  fuelLevel: number;
 }
 
-export interface RouteStop {
+export interface Driver {
   id: string;
   name: string;
-  estimatedArrivalTime?: string;
+  licenseNumber: string;
+  phoneNumber: string;
+  status: 'ACTIVE' | 'OFF_DUTY';
+  avatarUrl: string;
+  rating: number;
 }
 
 export interface BusRoute {
   id: string;
   name: string;
-  origin: string;
-  destination: string;
-  stops: RouteStop[];
+  stops: string[];
   durationMinutes: number;
-  type: 'MORNING' | 'EVENING' | 'CIRCULAR';
+  type: 'CAMPUS_TO_TOWN' | 'MEDICAL_SCHOOL' | 'HOSTEL_SHUTTLE';
 }
 
 export interface Schedule {
   id: string;
   routeId: string;
   busId: string;
-  departureTime: string;
   driverId: string;
+  departureTime: string;
   availableSeats: number;
   totalSeats: number;
-  status: 'ON_TIME' | 'DELAYED' | 'DEPARTED';
-  semester?: string;
+  status: 'ON_TIME' | 'DELAYED';
 }
 
 export interface Enrollment {
   id: string;
   userId: string;
-  routeId: string;
-  appliedDate: string;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
-  priorityReason: string;
-}
-
-export interface BoardingLog {
-  id: string;
-  userId: string;
-  scheduleId: string;
-  boardingTime: string;
-  location: string;
+  applicationDate: string;
 }
 
 export interface Booking {
@@ -89,5 +67,5 @@ export interface Booking {
   routeId: string;
   bookingTime: string;
   seatNumber: string;
-  status: 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
+  status: 'CONFIRMED' | 'CANCELLED';
 }

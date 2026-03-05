@@ -14,17 +14,11 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, userName, userRole }) => {
   const allNavItems = [
     { id: 'dashboard', label: 'Dashboard', icon: ICONS.Dashboard, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
-    { id: 'enrollment', label: 'Enrollment', icon: ICONS.FileCheck, roles: [UserRole.STUDENT, UserRole.STAFF] },
-    { id: 'applications', label: 'Applications', icon: ICONS.FileText, roles: [UserRole.ADMIN, UserRole.TRANSPORT_MANAGER] },
-    { id: 'fleet', label: 'Fleet Mgmt', icon: ICONS.Bus, roles: [UserRole.ADMIN, UserRole.TRANSPORT_MANAGER] },
     { id: 'booking', label: 'Book Ride', icon: ICONS.Route, roles: [UserRole.STUDENT, UserRole.STAFF] },
-    { id: 'attendance', label: 'Boarding Logs', icon: ICONS.Scanner, roles: [UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
+    { id: 'navigation', label: 'Navigation', icon: ICONS.Map, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN] },
+    { id: 'visualizer', label: 'AI Visualizer', icon: ICONS.Image, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN] },
+    { id: 'fleet', label: 'Fleet Mgmt', icon: ICONS.Bus, roles: [UserRole.ADMIN, UserRole.TRANSPORT_MANAGER] },
     { id: 'drivers', label: 'Drivers', icon: ICONS.Users, roles: [UserRole.ADMIN, UserRole.TRANSPORT_MANAGER] },
-    { id: 'schedules', label: 'Schedules', icon: ICONS.Calendar, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
-    { id: 'navigation', label: 'Navigation', icon: ICONS.Map, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
-    { id: 'visualizer', label: 'AI Visualizer', icon: ICONS.Image, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
-    { id: 'history', label: 'My Bookings', icon: ICONS.History, roles: [UserRole.STUDENT, UserRole.STAFF] },
-    { id: 'profile', label: 'Profile', icon: ICONS.User, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
     { id: 'settings', label: 'Settings', icon: ICONS.Settings, roles: [UserRole.STUDENT, UserRole.STAFF, UserRole.ADMIN, UserRole.TRANSPORT_MANAGER, UserRole.SECURITY] },
   ];
 
@@ -37,9 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
         <div className="p-6">
           <div className="flex items-center gap-3 mb-8 cursor-pointer" onClick={() => setActiveTab('dashboard')}>
             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-inner">
-              <img src={ASSET_PATHS.LOGO} alt="Kabale University Logo" className="object-contain" onError={(e) => {
-                e.currentTarget.src = 'https://www.kab.ac.ug/wp-content/uploads/2021/08/kab-logo.png';
-              }} />
+              <img src={ASSET_PATHS.LOGO} alt="Kabale University Logo" className="object-contain" />
             </div>
             <div>
               <h1 className="text-lg font-bold leading-none text-white tracking-tight">KUTS</h1>
@@ -72,9 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
         <div className="mt-auto p-6 border-t border-slate-800 bg-slate-900/50">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center border-2 border-green-600 overflow-hidden shadow-lg">
-               <img src={ASSET_PATHS.USER_PROFILE} alt="Avatar" onError={(e) => {
-                 e.currentTarget.src = `https://picsum.photos/seed/${userName}/40/40`;
-               }} />
+               <img src={ASSET_PATHS.USER_PROFILE} alt="Avatar" />
             </div>
             <div className="overflow-hidden">
               <p className="font-bold text-sm truncate">{userName}</p>
@@ -88,12 +78,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
       <main className="flex-1 flex flex-col min-w-0 bg-slate-50 dark:bg-slate-950 overflow-y-auto scroll-smooth">
         <header className="h-16 md:h-20 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 md:px-8 sticky top-0 z-10 backdrop-blur-md bg-white/90 dark:bg-slate-900/90">
           <div className="flex items-center gap-3 md:gap-4">
-             {/* Mobile Logo */}
-             <div className="md:hidden w-8 h-8 bg-white dark:bg-slate-800 rounded-lg p-1 border border-slate-200 dark:border-slate-700">
-               <img src={ASSET_PATHS.LOGO} alt="KAB Logo" className="object-contain" onError={(e) => {
-                 e.currentTarget.src = 'https://www.kab.ac.ug/wp-content/uploads/2021/08/kab-logo.png';
-               }} />
-             </div>
              <h2 className="text-lg md:text-xl font-extrabold text-slate-800 dark:text-white capitalize tracking-tight truncate max-w-[150px] sm:max-w-none">{activeTab.replace('-', ' ')}</h2>
           </div>
           
@@ -147,17 +131,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
             <span className="text-[9px] font-bold mt-1 uppercase tracking-tighter truncate w-12 text-center">{item.label}</span>
           </button>
         ))}
-        {navItems.length > 5 && (
-          <button
-            onClick={() => setActiveTab('profile')}
-            className={`flex flex-col items-center p-2 rounded-xl transition-all ${
-              activeTab === 'profile' ? 'text-green-700 dark:text-green-400 scale-110' : 'text-slate-400 dark:text-slate-500'
-            }`}
-          >
-            <ICONS.User />
-            <span className="text-[9px] font-bold mt-1 uppercase tracking-tighter">More</span>
-          </button>
-        )}
       </div>
     </div>
   );

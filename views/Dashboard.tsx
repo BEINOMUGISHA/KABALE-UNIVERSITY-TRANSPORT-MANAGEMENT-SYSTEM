@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
-import { ICONS, ROUTES, MOCK_USER, ASSET_PATHS } from '../constants';
+import { ICONS, ASSET_PATHS } from '../constants';
 import { kutsStore } from '../services/store';
 import { getTravelAdvice } from '../services/geminiService';
 
@@ -21,13 +21,12 @@ const Dashboard: React.FC = () => {
     e.preventDefault();
     if (!query.trim()) return;
     setIsAiLoading(true);
-    // Passing current backend state to AI for context-aware advice
     const contextStr = `Store State: ${JSON.stringify({ 
       fleet: kutsStore.getBuses().length, 
       activeBookings: kutsStore.getBookings().length 
     })}`;
     const response = await getTravelAdvice(`${contextStr}\n\nUser Question: ${query}`);
-    setAiResponse(response);
+    setAiResponse(response || "I couldn't generate a response.");
     setIsAiLoading(false);
   };
 
@@ -43,9 +42,7 @@ const Dashboard: React.FC = () => {
         <div className="absolute top-0 right-0 w-64 h-64 bg-green-50 dark:bg-green-900/10 rounded-full blur-3xl -mr-32 -mt-32 opacity-50"></div>
         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 relative z-10">
           <div className="w-16 h-16 md:w-24 md:h-24 bg-white dark:bg-slate-800 p-2 md:p-3 rounded-[1.5rem] md:rounded-[2rem] shadow-xl shadow-green-900/10 border border-slate-50 dark:border-slate-700 flex items-center justify-center">
-            <img src={ASSET_PATHS.LOGO} alt="Logo" className="w-full object-contain" onError={(e) => {
-                e.currentTarget.src = 'https://www.kab.ac.ug/wp-content/uploads/2021/08/kab-logo.png';
-            }} />
+            <img src={ASSET_PATHS.LOGO} alt="Logo" className="w-full object-contain" />
           </div>
           <div className="text-center md:text-left">
             <h1 className="text-2xl md:text-4xl font-black text-slate-800 dark:text-white tracking-tight">KUTS <span className="text-green-700 dark:text-green-400">Central</span></h1>
@@ -57,7 +54,7 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[
           { label: 'Active Fleet', val: stats.totalBuses, icon: ICONS.Bus, color: 'text-blue-600', bg: 'bg-blue-50' },
-          { label: 'System Health', val: `${Math.round((stats.operationalBuses / stats.totalBuses) * 100)}%`, icon: ICONS.Sparkles, color: 'text-green-600', bg: 'bg-green-50' },
+          { label: 'System Health', val: `${stats.totalBuses > 0 ? Math.round((stats.operationalBuses / stats.totalBuses) * 100) : 0}%`, icon: ICONS.Sparkles, color: 'text-green-600', bg: 'bg-green-50' },
           { label: 'Total Bookings', val: stats.totalBookings, icon: ICONS.History, color: 'text-purple-600', bg: 'bg-purple-50' },
           { label: 'Avg Fuel', val: `${Math.round(stats.avgFuel)}%`, icon: ICONS.Settings, color: 'text-orange-600', bg: 'bg-orange-50' },
         ].map((stat, i) => (
@@ -79,7 +76,7 @@ const Dashboard: React.FC = () => {
             <h3 className="text-xl font-black text-slate-800 dark:text-white">Route Efficiency</h3>
             <div className="flex items-center gap-2">
                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Live Database Feed</span>
+               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Live Feed</span>
             </div>
           </div>
           <div className="h-64">
